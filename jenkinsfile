@@ -13,10 +13,11 @@ stage('test') {
     npm test || true
   '''
 }
-   stage('Docker Build & Push') {
-     docker.withRegistry('https://registry.hub.docker.com', 'docker-hub') {
-      def nuestraapp = docker.build("macloujulian/nodejsapp:${gitcommit}", ".")
-      nuestraapp.push()
-     }
-   }
+stage('Docker Build & Push') {
+  docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-credentials') {
+    def nuestraapp = docker.build("kmolina97/nodejsapp:${gitcommit}", ".")
+    nuestraapp.push()
+    nuestraapp.push('latest')
+  }
+}
 }
